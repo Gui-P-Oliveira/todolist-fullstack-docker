@@ -1,0 +1,23 @@
+version: '3.8' #define a versão da sintaxe
+
+services:
+  backend:
+    build: ./backend #cria o serviço usando o dockerfile da pasta do backend
+    ports:
+      #conecta a porta 5000 da máquina à porta 5000 do contêiner
+      - "5000:5000"
+    volumes:
+      #cria um link entre o arquivo no computador e o arquivo dentro do contêiner
+      - ./backend/database.db:/app/database.db
+
+  frontend:
+    build: ./frontend #constrói a imagem usando o Dockerfile da pasta ./frontend
+    ports:
+      - "5173:5173" #mapeia a porta 5173 da máquina para a 5173 do contêiner
+    depends_on:
+      #garante que o serviço 'backend' seja iniciado antes do 'frontend'
+      - backend
+    env_file:
+      #carrega as variáveis de ambiente do arquivo .env do frontend para dentro do contêiner.
+      #é o que faz a API_URL apontar para 'http://backend:5000'
+      - ./frontend/.env
