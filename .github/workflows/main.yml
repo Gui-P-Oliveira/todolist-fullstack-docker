@@ -1,0 +1,48 @@
+name: CI/CD - Construir e Publicar Imagens Docker
+
+#gatilho
+on:
+  #roda toda vez que fizer 'git push' para a branch 'main'
+  push:
+    branches: [ "main" ]
+  
+  #permite que você rode este workflow manualmente na aba "Actions" do GitHub
+  workflow_dispatch:
+
+#trabalhod, o que vai fazer
+jobs:
+  build-and-push:
+    #a automação vai rodar em uma máquina virtual Linux fornecida pelo GitHub
+    runs-on: ubuntu-latest
+
+    #sequência de tarefas a serem executadas
+    steps:
+      #pbaixar o código
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      #fazer login no Docker Hub
+      - name: Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      #construir e enviar a imagem do Backend
+      - name: Construir e enviar a imagem do Backend
+        uses: docker/build-push-action@v5
+        with:
+          #'context' diz onde está o Dockerfile para esta imagem
+          context: ./backend
+          #'push: true' significa que, após construir, ele deve enviar para o Docker Hub.
+          push: true
+          #'tag' é o nome que a imagem terá no Docker Hub.
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/todolist-backend:latest
+
+      #construir e enviar a imagem do Frontend
+      - name: Construir e enviar a imagem do Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/todolist-frontend:latest
