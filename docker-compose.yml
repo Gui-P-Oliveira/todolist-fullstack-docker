@@ -3,12 +3,14 @@ version: '3.8' #define a versão da sintaxe
 services:
   backend:
     build: ./backend #cria o serviço usando o dockerfile da pasta do backend
+    environment:
+      - DATABASE_PATH=/app/data/database.db
     ports:
       #conecta a porta 5000 da máquina à porta 5000 do contêiner
       - "5000:5000"
     volumes:
       #cria um link entre o arquivo no computador e o arquivo dentro do contêiner
-      - ./backend/database.db:/app/database.db
+      - ./backend/data:/app/data
 
   frontend:
     build: ./frontend #constrói a imagem usando o Dockerfile da pasta ./frontend
