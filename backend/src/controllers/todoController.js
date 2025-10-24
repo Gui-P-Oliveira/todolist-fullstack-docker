@@ -5,6 +5,7 @@ const getAllTodos = async (req, res) => {
         const todos = await TodoModel.findAll();
         res.json(todos.map(todo => ({ ...todo, completed: Boolean(todo.completed) })));
     } catch (error) {
+        console.error("Erro ao processar a requisição:", error.message);
         res.status(500).json({ message: 'Erro ao buscar as tarefas.' });
     }
 };
@@ -18,6 +19,7 @@ const createTodo = async (req, res) => {
         const newTodo = await TodoModel.create(task);
         res.status(201).json({ ...newTodo, completed: Boolean(newTodo.completed) });
     } catch (error) {
+        console.error("Erro ao processar a requisição:", error.message);
         res.status(500).json({ message: 'Erro ao adicionar a tarefa.' });
     }
 };
@@ -39,6 +41,7 @@ const updateTodo = async (req, res) => {
 
         res.status(200).json({ ...updatedTodo, completed: Boolean(updatedTodo.completed) });
     } catch (error) {
+        console.error("Erro ao processar a requisição:", error.message);
         res.status(500).json({ message: 'Erro ao atualizar a tarefa.' });
     }
 };
@@ -54,6 +57,7 @@ const deleteTodo = async (req, res) => {
 
         res.status(200).json({ message: 'Tarefa deletada com sucesso.' });
     } catch (error) {
+        console.error("Erro ao processar a requisição:", error.message);
         res.status(500).json({ message: 'Erro ao deletar a tarefa.' });
     }
 };
