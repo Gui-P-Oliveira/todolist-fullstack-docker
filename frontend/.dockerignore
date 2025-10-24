@@ -1,1 +1,40 @@
+# A pasta node_modules é gigante e deve ser gerada DENTRO do container durante o 'RUN npm install' (ou 'npm ci').
+# Nunca copie a pasta node_modules local.
 node_modules
+
+# Artefatos de Build Local
+# O Vite usa a 'dist' como pasta de saída do build.
+# O build de produção deve ser feito DENTRO do container, não copiado do seu PC.
+dist
+.vite/
+# Outro nome comum para build
+build
+
+# 3. SEGURANÇA: Segredos e Configuração de Ambiente
+# NUNCA inclua seus arquivos .env na imagem.
+# Eles contêm segredos (senhas, chaves de API).
+# As variáveis de ambiente devem ser injetadas no container em runtime.
+.env
+.env.local
+.env.*.local
+
+# 4. Logs e Relatórios de Erro
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+*.log
+
+# 5. Configuração do Git
+# O histórico do Git é grande, desnecessário para a imagem e um risco de segurança.
+.git
+.gitignore
+
+# 6. Configurações de Editor de Código
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# 7. Arquivos de Sistema Operacional (macOS e Windows)
+.DS_Store
+Thumbs.db
