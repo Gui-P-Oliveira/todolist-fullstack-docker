@@ -1,1 +1,19 @@
+# Ficheiros do Docker
+.dockerignore
+Dockerfile
+
+# Dependências do Node (nunca copie as locais!)
 node_modules
+npm-debug.log
+
+# Ficheiros do Git
+.git
+.gitignore
+
+# Ficheiros de ambiente (nunca inclua segredos na imagem)
+.env
+*.env
+
+# Ficheiros de documentação ou sistema
+README.md
+.DS_Store
