@@ -78,3 +78,5 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/todolist-frontend:latest
+      
+      #Teste
