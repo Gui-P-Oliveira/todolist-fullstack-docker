@@ -9,15 +9,47 @@ on:
   #permite que você rode este workflow manualmente na aba "Actions" do GitHub
   workflow_dispatch:
 
-#trabalhod, o que vai fazer
+#Jobs, ações que seram realizadas
 jobs:
+  lint:
+    name: Lint Frontend and Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # --- LINT DO FRONTEND ---
+      - name: Install Frontend Dependencies
+        # A flag --prefix diz ao npm para correr na sub-pasta 'frontend'
+        run: npm ci --prefix frontend
+
+      - name: Run ESLint (Frontend)
+        # Corre o script 'lint' definido no 'frontend/package.json'
+        run: npm run lint --prefix frontend
+
+      # --- LINT DO BACKEND ---
+      - name: Install Backend Dependencies
+        # A flag --prefix diz ao npm para correr na sub-pasta 'backend'
+        run: npm ci --prefix backend
+
+      - name: Run ESLint (Backend)
+        # Corre o script 'lint' definido no 'backend/package.json'
+        run: npm run lint --prefix backend
+
   build-and-push:
+    name: Build and push
     #a automação vai rodar em uma máquina virtual Linux fornecida pelo GitHub
     runs-on: ubuntu-latest
+    needs: lint #precisa que o lint tenha passado para que o build e push ocorram 
 
     #sequência de tarefas a serem executadas
     steps:
-      #pbaixar o código
+      #baixar o código
       - name: Checkout do código
         uses: actions/checkout@v4
 
