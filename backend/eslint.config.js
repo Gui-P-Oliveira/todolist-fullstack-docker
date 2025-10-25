@@ -7,7 +7,7 @@ export default defineConfig([
     plugins: { js }, 
     extends: ["js/recommended"], 
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
       sourceType: 'module',      
       globals: {
         ...globals.node  // Isto define 'process', 'require', etc. como globais conhecidos
